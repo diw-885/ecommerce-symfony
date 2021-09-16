@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
+use App\Entity\Color;
 use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -13,6 +14,14 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
+
+        for ($i = 1; $i <= 5; $i++) {
+            $color = new Color();
+            $color->setName($faker->colorName());
+            $color->setValue(['r' => 100, 'v' => 200, 'b' => 255]);
+            $this->addReference('color-'.$i, $color);
+            $manager->persist($color);
+        }
 
         for ($i = 1; $i <= 10; $i++) {
             $category = new Category();
@@ -35,6 +44,9 @@ class AppFixtures extends Fixture
             $product->setPromotion($faker->numberBetween(0, 70));
             // Je récupère une référence dans le tableau qui contient d'autres objets
             $product->setCategory($this->getReference('category-'.rand(1, 10)));
+            $product->addColor($this->getReference('color-'.rand(1, 5)));
+            $product->addColor($this->getReference('color-'.rand(1, 5)));
+            $product->addColor($this->getReference('color-'.rand(1, 5)));
             $manager->persist($product);
         }
 

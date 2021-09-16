@@ -83,6 +83,6 @@ On affichera les couleurs liés au produit en BDD sur la fiche produit.
 
 ```twig
 {% for color in product.colors %}
-    {{ color }}
+    {{ color.name }}
 {% endfor %}
 ```
