@@ -21,6 +21,15 @@ class ProductType extends AbstractType
             ->add('liked')
             // ->add('image')
             ->add('promotion')
+            ->add('category', null, [
+                'choice_label' => 'name', // propriété name de la classe Category
+                // 'expanded' => true, // Pour avoir des radios au lieu d'un select
+            ])
+            ->add('colors', null, [
+                'choice_label' => 'name',
+                'expanded' => true, // Checkboxes au lieu de select multiple
+                // 'multiple' => true, // ManyToMany donc le multiple est à true
+            ])
         ;
     }
 

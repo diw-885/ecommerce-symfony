@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
+use App\Entity\Color;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
@@ -26,9 +28,17 @@ class ProductController extends AbstractController
         $products = $repository->findAllWithJoin();
         // Le produit (objet) avec l'id 1 (select * from product where id = 1)
         // $product = $repository->find(1);
+        $colors = $this->getDoctrine()
+            ->getRepository(Color::class)->findAll();
+        $categories = $this->getDoctrine()
+            ->getRepository(Category::class)->findAll();
+        $lastProduct = $repository->findOneBy([], ['createdAt' => 'desc']);
 
         return $this->render('product/list.html.twig', [
             'products' => $products,
+            'colors' => $colors,
+            'categories' => $categories,
+            'lastProduct' => $lastProduct,
         ]);
     }
 

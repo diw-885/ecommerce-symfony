@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -77,6 +79,16 @@ class Product
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
      */
     private $category;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Color::class, inversedBy="products")
+     */
+    private $colors;
+
+    public function __construct()
+    {
+        $this->colors = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -208,6 +220,30 @@ class Product
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Color[]
+     */
+    public function getColors(): Collection
+    {
+        return $this->colors;
+    }
+
+    public function addColor(Color $color): self
+    {
+        if (!$this->colors->contains($color)) {
+            $this->colors[] = $color;
+        }
+
+        return $this;
+    }
+
+    public function removeColor(Color $color): self
+    {
+        $this->colors->removeElement($color);
 
         return $this;
     }
