@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ProductType extends AbstractType
 {
@@ -19,7 +20,7 @@ class ProductType extends AbstractType
             ->add('price')
             // ->add('createdAt')
             ->add('liked')
-            // ->add('image')
+            ->add('imageFile', VichImageType::class)
             ->add('promotion')
             ->add('category', null, [
                 'choice_label' => 'name', // propriété name de la classe Category
