@@ -73,11 +73,11 @@
                                 </div>
                                 {% if app.user %}
                                 <div class="col mt-4">
-                                    {% if is_granted('ROLE_USER') %}
+                                    {% if is_granted('edit', product) %}
                                     <a href="{{ path('product_edit', {id: product.id}) }}" class="btn btn-secondary mr-3">Modifier</a>
                                     {% endif %}
 
-                                    {% if is_granted('ROLE_ADMIN') %}
+                                    {% if is_granted('delete', product) %}
                                     <a
                                         href="{{ path('product_delete', {id: product.id}) }}"
                                         class="btn btn-danger"

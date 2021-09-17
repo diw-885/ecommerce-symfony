@@ -47,6 +47,9 @@ class ProductController extends AbstractController
      */
     public function create(Request $request, SluggerInterface $slugger): Response
     {
+        // On vérifie que l'utilisateur est bien connecté
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         // $slugger est un service qu'on récupère avec l'interface SluggerInterface
         // dump($slugger);
         $product = new Product();
@@ -58,6 +61,7 @@ class ProductController extends AbstractController
             $slug = $slugger->slug($product->getName())->lower();
             $product->setSlug($slug);
             // $product->setCreatedAt(new \DateTimeImmutable());
+            $product->setUser($this->getUser());
 
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($product);
@@ -99,7 +103,7 @@ class ProductController extends AbstractController
     public function edit(Product $product, Request $request)
     {
         // L'utilisateur doit être connecté, s'il ne l'est pas, on redirige vers le login
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        $this->denyAccessUnlessGranted('edit', $product);
 
         // select * from product where id = $id
         $form = $this->createForm(ProductType::class, $product);
@@ -124,7 +128,7 @@ class ProductController extends AbstractController
      */
     public function delete(Product $product)
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('delete', $product);
 
         $manager = $this->getDoctrine()->getManager();
         $manager->remove($product);

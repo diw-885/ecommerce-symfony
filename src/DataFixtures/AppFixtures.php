@@ -37,6 +37,11 @@ class AppFixtures extends Fixture
         $user->setPassword($this->encoder->encodePassword($user, 'password'));
         $manager->persist($user);
 
+        $user = new User();
+        $user->setEmail('marina@boxydev.com');
+        $user->setPassword($this->encoder->encodePassword($user, 'password'));
+        $manager->persist($user);
+
         for ($i = 1; $i <= 5; $i++) {
             $color = new Color();
             $color->setName($faker->colorName());
@@ -69,6 +74,7 @@ class AppFixtures extends Fixture
             $product->addColor($this->getReference('color-'.rand(1, 5)));
             $product->addColor($this->getReference('color-'.rand(1, 5)));
             $product->addColor($this->getReference('color-'.rand(1, 5)));
+            $product->setUser($user);
             $manager->persist($product);
         }
 

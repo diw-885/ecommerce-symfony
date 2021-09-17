@@ -85,6 +85,12 @@ class Product
      */
     private $colors;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function __construct()
     {
         $this->colors = new ArrayCollection();
@@ -244,6 +250,18 @@ class Product
     public function removeColor(Color $color): self
     {
         $this->colors->removeElement($color);
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
