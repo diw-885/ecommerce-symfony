@@ -56,6 +56,19 @@ class ProductRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByColors($colors)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        if (!empty($colors)) { // Si on a des couleurs, on join sur la table colors on ne sélectionne que les couleurs choisies dans le filtre
+            $qb->join('p.colors', 'c')
+                ->where('c.id IN (:colors)')
+                ->setParameter('colors', implode(',', $colors)); // [11, 12, 13] => 11, 12, 13
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Product[] Returns an array of Product objects
     //  */
