@@ -38,3 +38,7 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        # Les anonymes ont accès à la page de login
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # Le site n'est accessible que si on est connecté
+        - { path: ^/, roles: ROLE_USER }

@@ -5,15 +5,37 @@ namespace App\DataFixtures;
 use App\Entity\Category;
 use App\Entity\Color;
 use App\Entity\Product;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
+    private $encoder;
+
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
+        $this->encoder = $encoder;
+    }
+
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
+
+        // Un administrateur
+        $user = new User();
+        $user->setEmail('matthieu@boxydev.com');
+        $user->setPassword($this->encoder->encodePassword($user, 'password'));
+        $user->setRoles(['ROLE_ADMIN']);
+        $manager->persist($user);
+
+        // Un utilisateur
+        $user = new User();
+        $user->setEmail('fiorella@boxydev.com');
+        $user->setPassword($this->encoder->encodePassword($user, 'password'));
+        $manager->persist($user);
 
         for ($i = 1; $i <= 5; $i++) {
             $color = new Color();
