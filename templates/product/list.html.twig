@@ -11,7 +11,7 @@
         <div class="col-12 col-sm-3"> <!-- Sidebar -->
             <div class="card bg-light mb-3">
                 <div class="card-header bg-primary text-white text-uppercase"><i class="fa fa-list"></i> Filtres</div>
-                <form action="" method="post">
+                <form action="" method="post" id="filters">
                     <ul class="list-group">
                         {% for color in colors %}
                         <li class="list-group-item">
@@ -49,7 +49,7 @@
             </div>
         </div> <!-- ./Sidebar -->
         <div class="col"> <!-- Product list -->
-            <div class="row">
+            <div class="row" id="product-list">
                 {% for product in products %}
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="card card-product mb-4">
