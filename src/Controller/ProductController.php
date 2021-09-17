@@ -92,4 +92,44 @@ class ProductController extends AbstractController
             'product' => $product,
         ]);
     }
+
+    /**
+     * @Route("/product/{id}/edit", name="product_edit")
+     */
+    public function edit(Product $product, Request $request)
+    {
+        // L'utilisateur doit être connecté, s'il ne l'est pas, on redirige vers le login
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        // select * from product where id = $id
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash('success', 'Le produit a bien été modifié');
+
+            return $this->redirectToRoute('product_show', ['slug' => $product->getSlug()]);
+        }
+
+        return $this->render('product/edit.html.twig', [
+            'form' => $form->createView(),
+            'product' => $product,
+        ]);
+    }
+
+    /**
+     * @Route("/product/{id}/delete", name="product_delete")
+     */
+    public function delete(Product $product)
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $manager = $this->getDoctrine()->getManager();
+        $manager->remove($product);
+        $manager->flush();
+
+        return $this->redirectToRoute('product_list');
+    }
 }
